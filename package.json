@@ -7,9 +7,9 @@
     "format:check": "prettier --check '*/**/*.*{js,json,md,ts}'",
     "lint": "eslint -c .eslintrc.json --ext \"**/*.ts\"",
     "deploy": "npx hardhat run scripts/deploy-contract.ts",
-    "w3f:deploy": "npx w3f deploy web3-functions/open-ai-nft/batch-reveal.ts",
-    "test": "npx w3f test web3-functions/open-ai-nft/index.ts --user-args=nftAddress:0xD47c74228038E8542A38e3E7fb1f4a44121eE14E --show-logs",
-    "test:batch": "npx w3f test web3-functions/open-ai-nft/batch-reveal.ts --user-args=nftAddress:0xd47c74228038e8542a38e3e7fb1f4a44121ee14e --show-logs"
+    "w3f:deploy": "npx w3f deploy web3-functions/enzyme/batch-reveal.ts",
+    "test": "npx w3f test web3-functions/enzyme/index.ts --user-args=nftAddress:0xD47c74228038E8542A38e3E7fb1f4a44121eE14E --show-logs",
+    "test:batch": "npx w3f test web3-functions/enzyme/batch-reveal.ts --user-args=nftAddress:0xd47c74228038e8542a38e3e7fb1f4a44121ee14e --show-logs"
   },
   "license": "ISC",
   "devDependencies": {
@@ -46,9 +46,6 @@
     "@gelatonetwork/ops-sdk": "^2.2.0-alpha",
     "@gelatonetwork/web3-functions-sdk": "^0.4.3",
     "axios": "^1.3.2",
-    "hardhat-deploy": "^0.11.25",
-    "ky": "^0.33.2",
-    "nft.storage": "^7.0.0",
-    "openai": "^3.1.0"
+    "ky": "^0.33.2"
   }
 }
