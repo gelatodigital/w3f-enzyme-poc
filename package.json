@@ -7,8 +7,8 @@
     "format:check": "prettier --check '*/**/*.*{js,json,md,ts}'",
     "lint": "eslint -c .eslintrc.json --ext \"**/*.ts\"",
     "deploy": "npx hardhat run scripts/deploy-contract.ts",
-    "w3f:deploy": "npx w3f deploy web3-functions/enzyme/batch-reveal.ts",
-    "test": "npx w3f test web3-functions/enzyme/index.ts --user-args=nftAddress:0xD47c74228038E8542A38e3E7fb1f4a44121eE14E --show-logs",
+    "w3f:deploy": "npx w3f deploy web3-functions/enzyme/index.ts",
+    "test": "npx w3f test web3-functions/enzyme/index.ts  --show-logs",
     "test:batch": "npx w3f test web3-functions/enzyme/batch-reveal.ts --user-args=nftAddress:0xd47c74228038e8542a38e3e7fb1f4a44121ee14e --show-logs"
   },
   "license": "ISC",
@@ -45,6 +45,9 @@
     "@ethersproject/providers": "^5.7.2",
     "@gelatonetwork/ops-sdk": "^2.2.0-alpha",
     "@gelatonetwork/web3-functions-sdk": "^0.4.3",
+    "@paraswap/sdk": "^6.1.2",
+    "@uniswap/sdk-core": "^3.1.0",
+    "@uniswap/v3-sdk": "^3.9.0",
     "axios": "^1.3.2",
     "ky": "^0.33.2"
   }

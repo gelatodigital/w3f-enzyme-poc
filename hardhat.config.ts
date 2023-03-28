@@ -22,7 +22,7 @@ glob.sync('./tasks/**/*.ts').forEach(function (file: any) {
 });
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "mumbai",
+  defaultNetwork: "matic",
   etherscan: {
     apiKey: {
       goerli: ETHERSCAN_API_KEY ?? "",
@@ -34,10 +34,9 @@ const config: HardhatUserConfig = {
     hardhat: {
       allowUnlimitedContractSize: true,
       forking: {
-        url: `https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_ID}`
-       // blockNumber: 7704180
+        url: `https://polygon-rpc.com`,
+        blockNumber: 40851211 
        
-      
       },
     },
     localhost: {
@@ -51,7 +50,7 @@ const config: HardhatUserConfig = {
     },
     matic: {
       url: 'https://polygon-rpc.com', //'https://polygon-mainnet.g.alchemy.com/v2/r6kvmGCX5T_vMG1vdQhuXBtHaOuZECdX',
-  
+      chainId: 137,
       //https://polygon-rpc.com 0x5dcde0c1be6cdfacba8866e56182e66221c6eaf3f6a421bc58b6939d84e57b7b
       gasPrice: 1000000000,
           accounts:

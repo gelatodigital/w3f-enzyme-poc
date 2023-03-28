@@ -1,18 +1,24 @@
-# EthDubai Gelato Bots NFT
+# Enzyme PoC
 
 ## Summary
 
-NFT powered by Open AI & Web3 functions:
-- Each uer can mint 1 NFT
-- A Web3 function is listening to every new mint and generate a new art using Open Ai (Dall-E)
-- The NFT pic is published on IPFS and revealed on-chain via Gelato Automate
+This project showcases how to use Gelato Web3 Functions to implement automatic trading strategies usind [Enzyme Vaults](https://enzyme.finance/)
 
-## Demo
-- Polygon:
-  - Mint website: https://eth-dubai-nft.web.app/ 
-  - Smart Contract: https://polygonscan.com/address/0xd47c74228038e8542a38e3e7fb1f4a44121ee14e
-  - Web3 Function: https://beta.app.gelato.network/task/0xce305033e53322a7e32f58b429ce0ff9a8c314b2163851dd12a75e5a4ed1e85e?chainId=137
-  - Open Sea NFTs: https://opensea.io/collection/eth-dubai-gelato-bots-1
+We have created a [Gelato Vault](https://app.enzyme.finance/vault/0x4e35a88965676b2d39e17293568dfcf30ddd7076?network=polygon) on Polygon 
+
+
+We implement two simple trading strategies:
+
+1) Trailing Stop:
+   We will push up or stop loss as long as the price goes up.
+   When hitting the stop loss we will exist the trade
+
+2) "Bounce Entry" 
+   If we are not in a trade and the price start to move up more than a certain threshold we will en ter the trade
+
+
+The task is live on poligon [here]()
+
 
 ## How to run
 
