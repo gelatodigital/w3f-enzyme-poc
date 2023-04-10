@@ -4,24 +4,11 @@ import { Contract, BigNumber, utils } from "ethers";
 import { uniswapQuote, USDC_ADDRESS, WETH_ADDRESS } from "./helpers/uniswap-quote";
 const coder = utils.defaultAbiCoder;
 
-const NFT_ABI = [
-  "event Transfer(address indexed from, address indexed to, uint256 indexed tokenId)",
-  "function revealNft(uint256 tokenId, string memory tokenURI) external",
-  "function tokenURI(uint256 tokenId) public view returns (string memory) ",
-  "function tokenIds() public view returns(uint256)",
-  "function tokenIdByUser(address) public view returns(uint256)",
-  "function nightTimeByToken(uint256) public view returns(bool)",
-  "function mint(bool _isNight) external",
-  "event MintEvent(uint256 _tokenId)",
-];
-const NOT_REVEALED_URI = "ipfs://bafyreicwi7sbomz7lu5jozgeghclhptilbvvltpxt3hbpyazz5zxvqh62m/metadata.json";
 
 Web3Function.onRun(async (context: Web3FunctionContext) => {
   const { userArgs, storage, secrets, provider } = context;
 
-  // ////// User Arguments
-  // const nftAddress = userArgs.nftAddress;
-  // if (!nftAddress) throw new Error("Missing userArgs.nftAddress please provide");
+
 
   ////// User Storage
   const lastMin = +((await storage.get("lastMin")) ?? "0");
@@ -67,7 +54,7 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
     let diff = lastMax - price;
     if (diff < 0) {
       ///  *****************************************************  ///
-      ///  Price is goind up, update to new max
+      ///  Price is going up, update to new max
       ///  *****************************************************  ///
       await storage.set("lastMax", price.toString());
       console.log(`Old lastMax: ${lastMax.toString()}, New lastMax: ${price.toString()}`);
