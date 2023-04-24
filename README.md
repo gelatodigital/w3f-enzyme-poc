@@ -58,4 +58,29 @@ To create a task that runs your Web3 Function every minute, visit:
 
 2) Create the Task:
 
+Clicking in the above link we will forwarded to the creating task UI where we wil input our 
 
+<p align="left">
+  <img src="https://github.com/gelatodigital/enzyme-poc/blob/master/images/task_1.png?raw=true" width="350" title="hover text">
+</p>
+
+The contract address in this case is not the vault itself but the comptroller proxy associated with the vault
+
+<p align="left">
+  <img src="https://github.com/gelatodigital/enzyme-poc/blob/master/images/task_2.png?raw=true" width="350" title="hover text">
+</p>
+
+
+It is worth noticing that we can see the dedicated msg.sender in the task creation UI.
+
+
+3) Fund the 1Balance
+
+We wil need to fund 1Balance to pay for the transactions, for the time being we fund 1balance depositing USDC on Polygon
+
+<p align="left">
+  <img src="https://github.com/gelatodigital/enzyme-poc/blob/master/images/balance.png?raw=true" width="350" title="hover text">
+</p>
+
+
+4) Declare the dedicaed msg.sender as vault manager
