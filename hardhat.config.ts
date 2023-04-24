@@ -34,7 +34,7 @@ const config: HardhatUserConfig = {
     hardhat: {
       allowUnlimitedContractSize: true,
       forking: {
-        url: `https://eth-mainnet.g.alchemy.com/v2/1xWD3o5a70Z5yW-ioMeX5eNDRjpgiiN_`,
+        url: `https://eth-mainnet.g.alchemy.com/v2/${ALCHEMY_ID}`,
         blockNumber: 16990788
        
       },
@@ -49,9 +49,8 @@ const config: HardhatUserConfig = {
       url: `https://eth-goerli.alchemyapi.io/v2/${ALCHEMY_ID}`,
     },
     matic: {
-      url: 'https://polygon-rpc.com', //'https://polygon-mainnet.g.alchemy.com/v2/r6kvmGCX5T_vMG1vdQhuXBtHaOuZECdX',
+      url: 'https://polygon-rpc.com', 
       chainId: 137,
-      //https://polygon-rpc.com 0x5dcde0c1be6cdfacba8866e56182e66221c6eaf3f6a421bc58b6939d84e57b7b
       gasPrice: 1000000000,
           accounts:
         process.env['PRIVATE_KEY'] !== undefined
@@ -61,7 +60,7 @@ const config: HardhatUserConfig = {
     polygon: {
       chainId: 137,
       accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
-      url: `https://polygon-mainnet.g.alchemy.com/v2/HF4Mmimsk9XWO446jjrFyt2xEzXier-f`,
+      url: `https://polygon-mainnet.g.alchemy.com/v2/${ALCHEMY_ID}`,
     },
     mumbai: {
       url:`https://polygon-mumbai.g.alchemy.com/v2/${ALCHEMY_ID}`,
