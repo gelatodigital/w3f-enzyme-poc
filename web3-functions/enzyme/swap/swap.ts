@@ -4,12 +4,8 @@ import { Contract, BigNumber, utils } from "ethers";
 import { uniswapQuote, USDC_ADDRESS, WETH_ADDRESS } from "../helpers/uniswap-quote";
 const coder = utils.defaultAbiCoder;
 
-
 Web3Function.onRun(async (context: Web3FunctionContext) => {
   const { userArgs, storage, secrets, provider } = context;
-
-
-
 
   ///// User Storage
   const lastMin = +((await storage.get("lastMin")) ?? "0");
@@ -60,15 +56,11 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
       await storage.set("lastMax", price.toString());
       console.log(`Old lastMax: ${lastMax.toString()}, New lastMax: ${price.toString()}`);
       return { canExec: false, message: "No Trade Exit ---> Price UP " };
-
-
     } else if (diff == 0) {
       ///  *****************************************************  ///
       ///  Price not moving doing Nothing
       ///  *****************************************************  ///
       return { canExec: false, message: `No Trade Exit ---> No Price change: ${price.toString()} ` };
-
-
     } else if (diff / lastMax < EXIT / 100) {
       ///  *****************************************************  ///
       ///  Price decrease too small, doing Nothing
@@ -78,7 +70,6 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
         canExec: false,
         message: `No Trade Exit ---> Price decrease Small ${((diff / lastMax) * 100).toFixed(2)} %`,
       };
-
     } else {
       ///  *****************************************************  ///
       ///  Price Decrease Greater than threshold ---> EXIT THE TRADE
@@ -105,7 +96,7 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
         0,
         callArgs,
       ]);
- 
+
       return { canExec: true, callData };
     }
   } else {
@@ -130,7 +121,6 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
       ///  Price not moving doing Nothing
       ///  *****************************************************  ///
       return { canExec: false, message: `No Trade Entry ---> No Price change: ${price.toString()} ` };
-
     } else if (diff / lastMin < ENTRY / 100) {
       ///  *****************************************************  ///
       ///  Price Increate too small, doing Nothing
@@ -166,7 +156,7 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
         0,
         callArgs,
       ]);
-    
+
       return { canExec: true, callData };
     }
   }
