@@ -22,7 +22,7 @@ glob.sync('./tasks/**/*.ts').forEach(function (file: any) {
 });
 
 const config: HardhatUserConfig = {
-  defaultNetwork: "matic",
+  defaultNetwork: "localhost",
   etherscan: {
     apiKey: {
       goerli: ETHERSCAN_API_KEY ?? "",
@@ -34,8 +34,8 @@ const config: HardhatUserConfig = {
     hardhat: {
       allowUnlimitedContractSize: true,
       forking: {
-        url: `https://polygon-rpc.com`,
-        blockNumber: 17012545
+        url: `https://eth-mainnet.g.alchemy.com/v2/1xWD3o5a70Z5yW-ioMeX5eNDRjpgiiN_`,
+        blockNumber: 16990788
        
       },
     },

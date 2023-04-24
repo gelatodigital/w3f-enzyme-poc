@@ -7,6 +7,9 @@ import { constructSimpleSDK, SwapSide } from "@paraswap/sdk";
 import axios from "axios";
 
 async function main() {
+
+
+  
   const chainId = hre.network.config.chainId as number;
   console.log(chainId);
   const [signer] = await hre.ethers.getSigners();

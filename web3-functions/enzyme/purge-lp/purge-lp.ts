@@ -1,21 +1,70 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Web3Function, Web3FunctionContext } from "@gelatonetwork/web3-functions-sdk";
 import { Contract, BigNumber, utils } from "ethers";
-import { uniswapQuote, USDC_ADDRESS, WETH_ADDRESS } from "./helpers/uniswap-quote";
+import { uniswapQuote, USDC_ADDRESS, WETH_ADDRESS } from "../helpers/uniswap-quote";
 import { gql } from "graphql-tag";
 import { request } from "graphql-request";
-import { erc20 } from "./abis/lp_abis";
+import { erc20 } from "../abis/lp_abis";
 
 const coder = utils.defaultAbiCoder;
 
 Web3Function.onRun(async (context: Web3FunctionContext) => {
   const { userArgs, storage, secrets, provider } = context;
 
+  //// USER ARGS
+  const EXIT =(userArgs.exit as string) ?? "10";
+  const VAULT =(userArgs.vault as string) ?? "0";
+  const FINAL_COIN =(userArgs.finalCoin as string) ?? "0";
+
+  if (VAULT == "0") {
+  return { canExec: false, message: "No Vault available" };
+  }
+
+  //// STORED LP POSITIONS
+  //const storedLpPositions = JSON.parse((await storage.get("storedLpPositions")) ?? "{}");
+  const storedLpPositions:{[key:string]: number} = {"483556":25966.95983863329};
+
   const UNIV3_LP_POSITIONS_ADDRESSE = "0xC36442b4a4522E871399CD717aBDD847Ab11FE88";
   const UNIV3_LP_POSITIONS_ABI = ["function balanceOf(address) returns(uint256)"];
 
- // const storedLpPositions = JSON.parse((await storage.get("storedLpPositions")) ?? "{}");
-  const storedLpPositions:{[key:string]: number} =  {"464730":0,"481083":32597.79553038418};
+  const externalPositionId = "0x74fcfa9d039cafe01b247043947938e455aa7a21"
+
+
+ ///// STORED TO-SWAP ALT COINS
+let toSwapCoin = "0xae78736Cd615f374D3085123A210448E74Fc6393" // (await storage.get("toSwapCoin")) ?? "0";
+
+if (toSwapCoin != "0"){
+
+  console.log("do the swap")
+///// do the swap
+const VAULT_ABI = [
+  "function symbol() public view returns (memory string)",
+  "function balanceOf(address) public view returns(uint256)",
+];
+const coinContract = new Contract(toSwapCoin, VAULT_ABI, provider);
+let coinBalance = await coinContract.balanceOf(VAULT);
+
+let data = coder.encode(
+  ["address[]", "uint24[]", "uint256", "uint256"],
+  [[toSwapCoin,FINAL_COIN], ["500"], coinBalance, 1]
+);
+let callArgs = coder.encode(
+  ["address", "bytes4", "bytes"],
+  ["0xed6a08e05cb4260388dc7cc60bc5fefccfab2793", "0x03e38a2b", data]
+);
+const iface = new utils.Interface(["function callOnExtension(address,uint256, bytes calldata) external"]);
+let callData = iface.encodeFunctionData("callOnExtension", [
+  "0x31329024f1a3e4a4b3336e0b1dfa74cc3fec633e",
+  0,
+  callArgs,
+]);
+await storage.set("toSwapCoin", "0");
+return { canExec: true, callData };
+
+}
+
+
+
 
   ///// Querying current LP positions
   const query = gql`
@@ -42,7 +91,9 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
     }
   `;
 
-  let variables = { deployment: "ethereum", vaultId: "0x689be004eb78e731492e733b68e35911b3ad2c53" };
+  //let vaultId = "0x5e588c8cf7cd659767cf69bb6be85b9b07215888" // "0x689be004eb78e731492e733b68e35911b3ad2c53" 
+
+  let variables = { deployment: "ethereum", vaultId:VAULT};
 
   const api = "https://app.enzyme.finance/api/graphql";
   const data: any = await request(api, query, variables);
@@ -56,6 +107,7 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
   const lpPositions = data.uniswapV3VaultLiquidityPositions[0].nfts;
 
   for (const nft of lpPositions) {
+    console.log(nft.externalPositionId)
     if (lookUpTokens[nft.token0] == undefined) {
       const erc20Contract = new Contract(nft.token0, erc20, provider);
       const decimals = await erc20Contract.decimals();
@@ -124,7 +176,7 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
 
      if (lpPosition.value > prevValue) {
         storedLpPositions[lpPosition.id] = lpPosition.value;
-     } else if (diff >= 10) {
+     } else if (diff >= +EXIT) {
     
         if (positionToExit == undefined){
             console.log(+lpPosition.amount0)
@@ -135,6 +187,9 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
             let amountMin1 = (+lpPosition.amount1)*(1- 0.001)
             let amountMin1Big = utils.parseEther((amountMin1 / 10 ** lookUpTokens[lpPosition.token1].decimals).toString())
       
+            console.log(lpPosition.token0)
+            console.log(lpPosition.token1)
+
             let data = coder.encode(
                 ["uint256", "uint128", "uint256", "uint256"],
                 [lpPosition.id, lpPosition.liquidity, amountMin0Big, amountMin1Big]
@@ -149,8 +204,10 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
                 1,
                 callArgs,
               ]);
-        
+            
             positionToExit = { id: lpPosition.id, porcentage: diff, callData }
+            const toStoreSwapCoin  = lpPosition.token1.toLowerCase() == FINAL_COIN.toLowerCase() ? lpPosition.token0 : lpPosition.token1;
+            await storage.set("toSwapCoin", toStoreSwapCoin);
         }
      } 
     }
@@ -159,15 +216,16 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
   ///// Store current Positions
 
   await storage.set("storedLpPositions", JSON.stringify(storedLpPositions));
-
   console.log(positionToExit)
 
-  if (positionToExit == undefined) {
-    return { canExec: false, message: "No LP positions to Exit" };
-  } else {
+  if (positionToExit != undefined) {
     console.log(`Exiting position Id: ${positionToExit.id}, Decrease: ${positionToExit.porcentage.toFixed(2)}%`)
     return { canExec:true, callData: positionToExit.callData}
   }
+
+  return { canExec: false, message: "No LP positions to Exit" };
+
+
 
 
 });

@@ -1005,6 +1005,11 @@
     tweetnacl "^1.0.3"
     tweetnacl-util "^0.15.1"
 
+"@noble/bls12-381@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@noble/bls12-381/-/bls12-381-1.4.0.tgz#4db0e1577ef85632347e86eee81062acdda6d65b"
+  integrity sha512-mIYqC2jMX7Lcu1QtU/FFftMPDSXNCdlGex6BSf5nPojHjnzzBgs1klFWpB1R8YjqHmOO9xrCzF19f2c42+z3vg==
+
 "@noble/hashes@1.2.0", "@noble/hashes@~1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@noble/hashes/-/hashes-1.2.0.tgz#a3150eeb09cc7ab207ebf6d7b9ad311a9bdbed12"
@@ -3912,6 +3917,13 @@ dotignore@~0.1.2:
   integrity sha512-UGGGWfSauusaVJC+8fgV+NVvBXkCTmVv7sk6nojDZZvuOUNGUy0Zk4UpHQD6EDjS0jpBwcACvH4eofvyzBcRDw==
   dependencies:
     minimatch "^3.0.4"
+
+drand-client@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/drand-client/-/drand-client-1.1.0.tgz#f04338048ff76496aa5f464d2f7cbffdc7a7fdb7"
+  integrity sha512-CszMNTfYxUafKp3eEJHbg5G4OO2Kh11XnWBQ8hnNYEfVybrxqsWLipagaLtT5mOXozB8aICoOCvZh3wYmTc8BQ==
+  dependencies:
+    "@noble/bls12-381" "^1.4.0"
 
 duplexer3@^0.1.4:
   version "0.1.4"

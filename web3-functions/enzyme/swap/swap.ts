@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Web3Function, Web3FunctionContext } from "@gelatonetwork/web3-functions-sdk";
 import { Contract, BigNumber, utils } from "ethers";
-import { uniswapQuote, USDC_ADDRESS, WETH_ADDRESS } from "./helpers/uniswap-quote";
+import { uniswapQuote, USDC_ADDRESS, WETH_ADDRESS } from "../helpers/uniswap-quote";
 const coder = utils.defaultAbiCoder;
 
 
@@ -10,7 +10,8 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
 
 
 
-  ////// User Storage
+
+  ///// User Storage
   const lastMin = +((await storage.get("lastMin")) ?? "0");
   const lastMax = +((await storage.get("lastMax")) ?? "0");
 
