@@ -21,9 +21,8 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
   }
 
   //// STORED LP POSITIONS
-  //const storedLpPositions = JSON.parse((await storage.get("storedLpPositions")) ?? "{}");
-  const storedLpPositions:{[key:string]: number} = {"483556":25966.95983863329};
-
+  const storedLpPositions = JSON.parse((await storage.get("storedLpPositions")) ?? "{}");
+  
   const UNIV3_LP_POSITIONS_ADDRESSE = "0xC36442b4a4522E871399CD717aBDD847Ab11FE88";
   const UNIV3_LP_POSITIONS_ABI = ["function balanceOf(address) returns(uint256)"];
 
@@ -31,7 +30,7 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
 
 
  ///// STORED TO-SWAP ALT COINS
-let toSwapCoin = "0xae78736Cd615f374D3085123A210448E74Fc6393" // (await storage.get("toSwapCoin")) ?? "0";
+let toSwapCoin = (await storage.get("toSwapCoin")) ?? "0";
 
 if (toSwapCoin != "0"){
 
@@ -90,8 +89,6 @@ return { canExec: true, callData };
       }
     }
   `;
-
-  //let vaultId = "0x5e588c8cf7cd659767cf69bb6be85b9b07215888" // "0x689be004eb78e731492e733b68e35911b3ad2c53" 
 
   let variables = { deployment: "ethereum", vaultId:VAULT};
 
