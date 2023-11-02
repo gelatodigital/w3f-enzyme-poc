@@ -5,7 +5,8 @@ import { uniswapQuote, USDC_ADDRESS, WETH_ADDRESS } from "../helpers/uniswap-quo
 const coder = utils.defaultAbiCoder;
 
 Web3Function.onRun(async (context: Web3FunctionContext) => {
-  const { userArgs, storage, secrets, provider } = context;
+  const { userArgs, storage, secrets, multiChainProvider } = context;
+  const provider = multiChainProvider.default();
 
   ///// User Storage
   const lastMin = +((await storage.get("lastMin")) ?? "0");

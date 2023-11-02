@@ -9,7 +9,8 @@ import { erc20 } from "../abis/lp_abis";
 const coder = utils.defaultAbiCoder;
 
 Web3Function.onRun(async (context: Web3FunctionContext) => {
-  const { userArgs, storage, secrets, provider } = context;
+  const { userArgs, storage, secrets, multiChainProvider } = context;
+  const provider = multiChainProvider.default();
 
   //// USER ARGS
   const EXIT = (userArgs.exit as string) ?? "10";
